@@ -32,5 +32,24 @@ pipeline {
                 }
             }
         }
+		stage('Uploading to JFrog Artifactory') {
+			steps{
+			rtUpload(
+			serverid:"jfrog",
+			spec: '''{
+			"files":[{
+			"pattern": "module-a/target/*.jar",
+			"target": "Test-Repo"
+			}]
+			}
+			''',
+			)
+			}
+		}
+		stage('Archieving the Artifact'){
+		steps{
+		archiveArtifacts artifacts: 'module-a/target/*.jar', followSymlinks: false
+		}
+		}
     }
 }
