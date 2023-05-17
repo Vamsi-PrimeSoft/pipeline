@@ -35,7 +35,7 @@ pipeline {
 		stage('Uploading to JFrog Artifactory') {
 			steps{
 			rtUpload(
-			serverid:"jfrog",
+			serverId: "jfrog",
 			spec: '''{
 			"files":[{
 			"pattern": "module-a/target/*.jar",
