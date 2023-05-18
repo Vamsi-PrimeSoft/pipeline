@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Git Clone') {
             steps {
-                git credentialsId: 'ps', url: "${Repo}"
+                git credentialsId: 'ps', url: "${Repo 1}"
 
             }
         }
