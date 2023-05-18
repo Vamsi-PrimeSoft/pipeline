@@ -1,0 +1,66 @@
+pipeline {
+    agent {
+        node {
+            label 'maven-server'
+        }
+    }
+    
+    environment {
+        Repo = 'https://github.com/example/repository.git'
+    }
+    
+    tools {
+        maven 'mvn'
+    }
+    
+    stages {
+        stage('Git Clone') {
+            steps {
+                echo "Using repository URL: ${Repo}"
+                git credentialsId: 'ps', url: "${Repo}"
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    echo 'Building the project...'
+                    sh 'mvn clean install'
+                }
+            }
+        }
+        
+        stage('Sonar') {
+            steps {
+                script {
+                    echo 'Running Sonar analysis...'
+                    withSonarQubeEnv(credentialsId: 'sonarqube') {
+                        sh 'mvn sonar:sonar -Dsonar.projectName=test -Dsonar.projectKey=test'
+                    }
+                }
+            }
+        }
+        
+        stage('Uploading to JFrog Artifactory') {
+            steps {
+                echo 'Uploading artifacts to JFrog Artifactory...'
+                rtUpload(
+                    serverId: 'jfrog',
+                    spec: '''{
+                        "files":[{
+                            "pattern": "module-a/target/*.jar",
+                            "target": "Test-Repo"
+                        }]
+                    }''',
+                )
+            }
+        }
+        
+        stage('Archiving the Artifact') {
+            steps {
+                echo 'Archiving the artifact...'
+                archiveArtifacts artifacts: 'module-a/target/*.jar', followSymlinks: false
+            }
+        }
+    }
+}
