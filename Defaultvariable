@@ -6,7 +6,7 @@ pipeline {
     }
     
     environment {
-        Repo = 'https://github.com/example/repository.git'
+        Repo = 'https://github.com/Vamsi-PrimeSoft/pipeline.git'
     }
     
     tools {
