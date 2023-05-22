@@ -30,11 +30,11 @@ pipeline {
 					def minorVersion = version.tokenize('.')[1] 
 					def patchVersion = version.tokenize('.')[2].replace('-SNAPSHOT','') 
 					BUILD_VERSION = "module-a-${majorVersion}.${minorVersion}.${patchVersion}-${GIT_COMMIT[0..6]}-${BUILD_NUMBER}" 
-					echo "Major version: ${majorVersion}" 
-					echo "Minor version: ${minorVersion}" 
-					echo "patchVersion: ${patchVersion}" 
-					echo "Build Number: ${BUILD_NUMBER}" 
-					echo "Build Version: ${BUILD_VERSION}"
+					sh "echo 'Major version: ${majorVersion}'" 
+					sh "echo 'Minor version: ${minorVersion}'"
+					sh "echo 'patchVersion: ${patchVersion}'" 
+					sh "echo 'Build Number: ${BUILD_NUMBER}'"
+					sh "echo 'Build Version: ${BUILD_VERSION}'"
                     echo 'Building the project...'
                     sh 'mvn clean install'
                 }
