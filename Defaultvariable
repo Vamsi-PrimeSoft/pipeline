@@ -25,6 +25,19 @@ pipeline {
             steps {
                 script {			
                     echo 'Building the project...'
+                    echo 'Building the project...'
+                    def pom = readMavenPom file: 'pom.xml'
+                    def version = pom.version
+                    def majorVersion = version.tokenize('.')[0]
+                    def minorVersion = version.tokenize('.')[1]
+                    def patchVersion = version.tokenize('.')[2].replace('-SNAPSHOT', '')
+                    def buildVersion = "module-a-${majorVersion}.${minorVersion}.${patchVersion}-${GIT_COMMIT[0..6]}-${BUILD_NUMBER}"
+            
+                    echo "Major version: ${majorVersion}"
+                    echo "Minor version: ${minorVersion}"
+                    echo "Patch version: ${patchVersion}"
+                    echo "Build Number: ${BUILD_NUMBER}"
+                    echo "Build Version: ${buildVersion}"
                     sh 'mvn clean install'
                 }
             }
