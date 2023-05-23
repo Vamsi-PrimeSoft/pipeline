@@ -25,6 +25,7 @@ pipeline {
             steps {
                 script {		
                 			def pomXml = readFile 'pom.xml'
+					def pom = new XmlSlurper().parseText(pomXml)
 					def version = pom.version 
 					def majorVersion = version.tokenize('.')[0] 
 					def minorVersion = version.tokenize('.')[1] 
