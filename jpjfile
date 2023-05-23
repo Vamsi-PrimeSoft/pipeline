@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                
+                git 'https://github.com/Vamsi-Primesoft/pipeline.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                
+                sh 'mvn clean package'
+            }
+        }
+        
+        stage('PMD Analysis') {
+            steps {
+               
+                sh 'mvn pmd:pmd'
+                
+               
+                pmdAnalysis toolName: 'PMD', pattern: 'target/pmd.xml'
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                
+                sh 'mvn clean test jacoco:report'
+            }
+        }
+        
+        stage('Jacoco Coverage Report') {
+            steps {
+                
+                jacoco(execPattern: 'target/**/jacoco.exec')
+            }
+        }
+    }
+}
