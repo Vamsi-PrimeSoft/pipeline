@@ -37,6 +37,7 @@ pipeline {
 		    sh 'mvn clean'
                     sh "mvn versions:set -DnewVersion=${BUILD_VERSION}"
 		    sh 'mvn install'
+		    jacoco()
                 }
             }
         }
