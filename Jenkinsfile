@@ -27,7 +27,7 @@ pipeline {
             steps{
                 script {
                  withSonarQubeEnv(credentialsId: 'sonarqube') {
-                 sh 'mvn sonar:sonar -Dsonar.projectName=test -Dsonar.projectKey=test'
+                 sh 'mvn sonar:sonar -Dsonar.projectName=test -Dsonar.projectKey=test -Dsonar.qualitygate=Test Quality Gate'
                 }
                 }
             }
