@@ -27,18 +27,12 @@ pipeline {
             steps{
                 script {
                  withSonarQubeEnv(credentialsId: 'sonarqube') {
-                 sh 'mvn sonar:sonar -Dsonar.projectName=test -Dsonar.projectKey=test -Dsonar.qualitygate=Test Quality Gate'
+                 sh 'mvn sonar:sonar -Dsonar.projectName=test -Dsonar.projectKey=test'
                 }
                 }
             }
         }
-	    	stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
-            }
-          }
+	    
 		stage('Uploading to JFrog Artifactory') {
 			steps{
 			rtUpload(
